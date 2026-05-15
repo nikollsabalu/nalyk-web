@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --light: #FFFFFF;
+  --red: #E95855;
+  --purple: #c300ff;
+  --dark: #000;
+  --neutro: #0F0F0F;
+  /* theme */
+  --color-300: #bef264;
+  --color-400: #a3e635;
+  --color-500: #84cc16;
+  --color-600: #65a30d;
+  --color-700: #4d7c0f;
+
+  --spotlight-color: 1, 107, 19;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--light);
+}
+
+body p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+/* Asegúrate de que esto esté en tu globals.css o similar */
+
+body::-webkit-scrollbar {
+  width: 10px;
+  /* Un poco más ancha para que se note el cambio */
+}
+
+body::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+body::-webkit-scrollbar-thumb {
+  /* Usamos las variables que el useEffect inyectará en el :root */
+  background: #505050;
+  /* El segundo es un color de respaldo */
+  border-radius: 20px;
+  border: 2px solid #000000;
+  /* Crea un pequeño margen */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #686868;
+}
+
+/* Opcional: El fondo de la barra (track) */
+body::-webkit-scrollbar-track {
+  background: #000;
+  /* O podrías usar var(--color-muted) con opacidad muy baja */
+}
+
+
+.fadeTop {
+  opacity: 0;
+  transform: translate(0, 10vh);
+  transition: all 1.7s;
+}
+
+.fadeRight {
+  opacity: 0;
+  transform: translate(-5vh, 0vh) !important;
+  transition: all 0.8s;
+}
+
+.fadeLeft {
+  opacity: 0;
+  transform: translate(-25vh, 0vh) !important;
+  transition: all 0.8s;
+}
+
+.left {
+  opacity: 1;
+  transform: translate(-20vh, 0vh);
+  transition: all 1.7s;
+}
+
+.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+
+.typing {
+  font-family: monospace;
+  color: var(--color-secondary);
+  /* lime-400 */
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid transparent;
+  animation: typing 1s steps(20, end) infinite alternate;
+}
+
+.cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 22ch;
+  }
+}
+
+@keyframes blink {
+
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.btn-wsp {
+  position: fixed;
+  right: 24px;
+  bottom: 100px;
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.btn-wsp:hover {
+  transform: scale(1.08);
+}
