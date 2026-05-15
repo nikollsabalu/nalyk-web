@@ -3,49 +3,46 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { IoTrashOutline, IoClose } from "react-icons/io5";
-
+import { useCart } from "../context/CartContext";
+ 
 
 interface Props {
+  isCartOpen: boolean;
   onClose: any;
 }
-const products = [
-  {
-    id: 1,
-    name: "Nombre del producto",
-    price: 89.9,
-    image:
-      "/hero.png",
-  },
-  {
-    id: 2,
-    name: "Nombre del producto",
-    price: 89.9,
-    image:
-      "/hero.png",
-  },
-  {
-    id: 3,
-    name: "Nombre del producto",
-    price: 89.9,
-    image:
-      "/hero.png",
-  },
-  {
-    id: 4,
-    name: "Nombre del producto",
-    price: 89.9,
-    image:
-      "/hero.png",
-  },
-];
 
-export default function CartDrawer({ onClose }: Props) {
+
+
+export default function CartDrawer({ onClose, isCartOpen }: Props) {
+
+  // const [cart, setCart] = useState(initialProducts);
+  const {
+    cart,
+    increaseQty,
+    decreaseQty,
+    removeItem,
+    subtotal,
+    hydrated,
+    getSubtotalItem
+  } = useCart();
+
+
 
   return (
-    <div className="fixed right-0 top-0 z-50 flex h-screen w-full justify-end bg-black/30">
-      <div className="flex h-full w-full max-w-[430px] flex-col bg-[#f7f7f5]">
+    <div
+      className={`fixed inset-0 z-50 flex justify-end bg-black/40 transition-opacity duration-500 ${isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      onClick={onClose}>
+      <div
+        className={`
+          h-full w-full max-w-[430px] bg-[#f7f7f5]
+          transform transition-transform duration-500 ease-in-out pr-10
+          ${isCartOpen ? "translate-x-0" : "translate-x-full"}
+        `}
+        onClick={(e) => e.stopPropagation()}>
         {/* HEADER */}
         <div className="flex items-center justify-between border-b border-[#e4e4e4] px-6 py-5">
           <h2 className="font-serif text-lg">Carrito</h2>
@@ -57,7 +54,7 @@ export default function CartDrawer({ onClose }: Props) {
 
         {/* PRODUCTS */}
         <div className="flex-1 overflow-y-auto">
-          {products?.map((product) => (
+          {cart?.map((product) => (
             <div
               key={product?.id}
               className="border-b border-[#dfdfdf] px-6 py-5"
@@ -67,10 +64,8 @@ export default function CartDrawer({ onClose }: Props) {
                   <Image
                     src={product?.image}
                     alt={product?.name}
-                    fill
-                    className="object-cover"
-                    width={"100%"}
-                    height={"100%"}
+                    layout='fill'
+                    objectFit="cover"
                   />
                 </div>
 
@@ -82,23 +77,27 @@ export default function CartDrawer({ onClose }: Props) {
                       </h3>
 
                       <p className="mt-6 text-sm font-light font-judson">
-                        S/ 89.90
+                        S/  {getSubtotalItem(product).toFixed(2)}
                       </p>
                     </div>
 
                     <button>
-                      <IoTrashOutline className="h-6 w-6 stroke-[1.5]" />
+                      <IoTrashOutline className="h-6 w-6 stroke-[1.5]" onClick={() => removeItem(product.id)} />
                     </button>
                   </div>
 
                   <div className="flex items-center justify-end gap-4">
-                    <button className="flex h-8 w-8 items-center justify-center rounded bg-[#efefef]">
+                    <button className="flex h-8 w-8 items-center justify-center rounded bg-[#efefef]"
+                      onClick={() => decreaseQty(product.id)}>
                       <FaMinus className="h-3 w-3" />
                     </button>
 
-                    <span className="text-sm font-judson">1</span>
+                    <span className="text-sm font-judson">
+                      {product.quantity}
+                    </span>
 
-                    <button className="flex h-8 w-8 items-center justify-center rounded bg-[#efefef]">
+                    <button className="flex h-8 w-8 items-center justify-center rounded bg-[#efefef]"
+                      onClick={() => increaseQty(product.id)}>
                       <FaPlus className="h-3 w-3" />
                     </button>
                   </div>
@@ -110,10 +109,11 @@ export default function CartDrawer({ onClose }: Props) {
 
         {/* FOOTER */}
         <div className="border-t border-[#dfdfdf] px-6 py-8">
-          <div className="mb-8 flex items-center justify-between">
-            <span className="font-serif text-lg">Total estimado</span>
 
-            <span className="text-xl font-light">S/ 378.60</span>
+          <div className="mb-8 flex items-center justify-between">
+            <span className="font-serif text-lg">Subtotal estimado</span>
+
+            <span className="text-xl font-light">  S/ {subtotal.toFixed(2)} </span>
           </div>
 
           <Link href="/cart"

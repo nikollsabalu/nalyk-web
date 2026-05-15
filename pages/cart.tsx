@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FaMinus, FaPlus, FaLock } from "react-icons/fa";
 import { IoTrashOutline, IoClose } from "react-icons/io5";
 import Layout from "../components/Layout";
+import { useCart } from "../context/CartContext";
 
 const products = [
     {
@@ -39,6 +40,18 @@ const products = [
 
 
 export default function Cart() {
+
+
+    const {
+        cart,
+        increaseQty,
+        decreaseQty,
+        removeItem,
+        subtotal,
+        hydrated,
+        getSubtotalItem
+    } = useCart();
+
     return (
 
 
@@ -52,7 +65,7 @@ export default function Cart() {
                     </h2>
 
                     <div className="space-y-5">
-                        {products.map((product) => (
+                        {cart.map((product) => (
                             <CartItem key={product?.id} product={product} />
                         ))}
                     </div>
@@ -79,7 +92,7 @@ export default function Cart() {
                         <div className="mt-8 space-y-5 text-[15px]  font-italiana">
                             <div className="flex items-center justify-between">
                                 <span>Subtotal</span>
-                                <span className="font-judson">S/ 378.60</span>
+                                <span className="font-judson">S/ {subtotal.toFixed(2)}</span>
                             </div>
 
                             <div className="flex items-center justify-between">
@@ -91,7 +104,7 @@ export default function Cart() {
 
                             <div className="flex items-center justify-between text-[28px] font-light">
                                 <span className="font-bold">Total</span>
-                                <span className="font-judson">S/ 378.60</span>
+                                <span className="font-judson">S/ {subtotal.toFixed(2)}</span>
                             </div>
                         </div>
 
@@ -118,6 +131,15 @@ export default function Cart() {
 
 
 function CartItem({ product }) {
+    const {
+        cart,
+        increaseQty,
+        decreaseQty,
+        removeItem,
+        subtotal,
+        hydrated,
+        getSubtotalItem
+    } = useCart();
     return (
         <div className="border-b border-[#d8d8d8] pb-4">
             <div className="flex gap-5">
@@ -137,13 +159,17 @@ function CartItem({ product }) {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <button className="flex h-7 w-7 items-center justify-center rounded bg-[#efefef]">
+                            <button className="flex h-7 w-7 items-center justify-center rounded bg-[#efefef]"
+                                onClick={() => decreaseQty(product.id)}>
                                 <FaMinus className="h-3 w-3" />
                             </button>
 
-                            <span className="text-sm font-judson">1</span>
+                            <span className="text-sm font-judson">
+                                {product.quantity}
+                            </span>
 
-                            <button className="flex h-7 w-7 items-center justify-center rounded bg-[#efefef]">
+                            <button className="flex h-7 w-7 items-center justify-center rounded bg-[#efefef]"
+                                onClick={() => increaseQty(product.id)}>
                                 <FaPlus className="h-3 w-3" />
                             </button>
                         </div>
@@ -151,7 +177,7 @@ function CartItem({ product }) {
 
                     <div className="flex flex-col items-end justify-between">
                         <div className="flex items-center gap-3">
-                            <span className="font-light font-judson">S/ 89.90</span>
+                            <span className="font-light font-judson">S/ {subtotal.toFixed(2)} </span>
 
                             <button>
                                 <IoTrashOutline className="h-5 w-5 stroke-[1.5]" />

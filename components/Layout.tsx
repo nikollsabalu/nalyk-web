@@ -15,7 +15,7 @@ const Layout = ({
   return (
     <div className={styles.layout} id="scrollContent">
       <Head>
-        <title> Nalyk | Joyas waterproof {pagina} </title>
+        <title> NALYK | Joyas waterproof {pagina} </title>
         <meta name="title" content="Nalyk | Joyas waterproof"></meta>
         <meta name="description" content="Senior Frontend Engineer specializing in React, Angular, Next.js, and Microfrontends. Based in Lima, Peru. Explore my software engineering portfolio and high-performance digital solutions." />
         <meta name="keywords" content="Systems Engineer, Frontend Developer, React, Angular, Next.js, Nikoll Sabalu, Software Architecture, Spain Tech, Next.js. Explore my portfolio for high-performance software engineering and digital solutions." />
